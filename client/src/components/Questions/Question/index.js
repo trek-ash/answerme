@@ -7,7 +7,7 @@ const Question = (props) => {
     }, [])
 
     const onAnswer = (questionId, answer) => {
-        console.log(questionId, answer)
+        props.saveAnswer(questionId, answer)
     }  
     return(
         <Fragment>

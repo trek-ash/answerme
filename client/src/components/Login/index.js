@@ -17,6 +17,8 @@ const Login = (props) => {
         const loginData = {email, password}
         AuthAPI.login(loginData)
         .then(res=>{
+            const {token} = res.data.result
+            localStorage.setItem("auth", token)
             localStorage.setItem("isAuthenticated", true)
             updateSuccessMessage("Login Successfull")
             props.history.push("/questions")

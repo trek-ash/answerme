@@ -27,5 +27,49 @@ router.post("/", userAuth, async (req, res)=>{
     }
     
 })
+router.get("/user", userAuth, async (req, res)=>{
+    try {
+        
+        const {user} = req
+        const userAnswers = await Answer.find({answer_by: user._id})
+    
+        res.status(200)
+        .json({
+            answers: userAnswers
+        })
+    } catch (error) {
+        console.log(e)
+        res.status(500)
+            .json({
+                error: "Something went wrong",
+                message: "Couldn't load answers"
+            })
+    }
+
+
+})
+router.post("/multiple", userAuth, async (req, res)=>{
+    try{
+        const {user} = req
+        const allAnswers = req.body.answers.map((ans)=>{
+            return {answer: ans.answer, questionId: ans.questionId, answer_by: user._id}
+        });
+
+        await Answer.collection.insertMany(allAnswers)
+
+        res.status(200)
+            .json({
+                msg: "Saved successfully"
+            })
+    }catch(e)   {
+        console.log(e)
+        res.status(500)
+            .json({
+                error: "Something went wrong",
+                message: e
+            })
+    }
+    
+})
 
 module.exports = router
