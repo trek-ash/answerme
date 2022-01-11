@@ -11,10 +11,11 @@ const Signup = (props) => {
     const onSignup = () => {
         updateErrorMessage(null)
         updateSuccessMessage(null)
-        console.log(email, password)
         const loginData = {email, password}
         AuthAPI.signup(loginData)
         .then(res=>{
+            const {token} = res.data.result
+            localStorage.setItem("auth", token)
             localStorage.setItem("isAuthenticated", true)
             updateSuccessMessage("Signup Successfull")
             props.history.push("/questions")

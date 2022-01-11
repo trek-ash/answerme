@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import "./questions.css"
 import QuestionAPI from '../../services/question'
+import AnswerAPI from '../../services/answer'
 import Question from './Question'
 const Questions = (props) => {
     const [questions, updateQuestions] = useState([]);
@@ -10,7 +11,6 @@ const Questions = (props) => {
     const [filter, updateFilter] = useState("All")
 
     useEffect(() => {
-        console.log(filter)
         if(filter=="All")
             updateFilteredQuestions(questions)
         else {
@@ -21,19 +21,56 @@ const Questions = (props) => {
     useEffect(() => {
         QuestionAPI.allQuestions()
         .then((res)=>{
-            console.log(res)
             updateQuestions(res.data.questions)
             updateFilteredQuestions(res.data.questions)
         }, (err)=>{
             console.log(err)
         })
+        const token = localStorage.getItem("auth")
 
+        AnswerAPI.getUserAnswers(token)
+        .then(res=>{
+            console.log(res)
+            const userAnswers = res.data.answers.map(answer=>{
+                return {answer: answer.answer, questionId: answer.questionId}
+            })
+            // updateUserAnswers(userAnswers)
+        }, err=>{
+
+            console.log(err)
+        })
     }, [])
 
     const submit = () => {
+        const token = localStorage.getItem("auth")
+        AnswerAPI.multipleAnswers({answers: userAnswer}, token)
+        .then(res=>{
+            console.log(res)
+            alert("Answers saved successfully")
+        })
+        .catch(err=>{
+            console.log(err);
+            alert("Something went wrong")
 
+            
+        })
     }
     
+    const saveAnswer = (questionId, answer)=> {
+        const userAnswers = [...userAnswer]
+        let isPresent = false;
+        userAnswers.forEach(ua=>{
+            if(ua.questionId==questionId)   {
+                ua.answer=answer
+                isPresent = true;
+            }
+        })
+        
+        if(!isPresent)
+            userAnswers.push({answer, questionId})
+
+        updateUserAnswers(userAnswers)
+    }
     return(
         <Fragment>
             <div className="container">
@@ -47,9 +84,9 @@ const Questions = (props) => {
                     </select>
                 </div>
                 <div style={{clear: "both"}}></div>
-                {filteredQuestions.map(question=><Question key={question._id} question={question}/>)} 
+                {filteredQuestions.map(question=><Question saveAnswer={saveAnswer} key={question._id} question={question}/>)} 
 
-                <button className="btn btn-success mt-5" onClick={submit}>Submit Answers</button>
+                <button className="btn btn-success mt-5" onClick={submit}>Save Answers</button>
             </div>
 		</Fragment>
     )
