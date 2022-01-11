@@ -52,6 +52,7 @@ const Questions = (props) => {
         .then(res=>{
             console.log(res)
             alert("Answers saved successfully")
+            
         })
         .catch(err=>{
             console.log(err);
@@ -59,6 +60,11 @@ const Questions = (props) => {
 
             
         })
+    }
+
+    const gotoStats = () => {
+        props.history.push("/stats")
+
     }
     
     const saveAnswer = (questionId, answer)=> {
@@ -79,6 +85,7 @@ const Questions = (props) => {
     return(
         <Fragment>
             <div className="container">
+                <button className="btn btn-sm my-3 btn-secondary" onClick={()=>gotoStats()}>Answer Stats</button>
                 <div className="float-right mt-4">
 
 			        Question category: 
