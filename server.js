@@ -45,9 +45,9 @@ mongoose.set("useFindAndModify", false);
 
 app.use(express.static(path.join(__dirname, "client", "build")))
 
-// app.use("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-// });
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 app.listen(port, ()=>{
     console.log("server running..")
 })
