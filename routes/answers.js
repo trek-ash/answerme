@@ -48,11 +48,38 @@ router.get("/user", userAuth, async (req, res)=>{
 
 
 })
+router.get("/stats/average", async (req, res)=>{
+    try {
+        const allAnswers = await Answer.aggregate([
+            {
+                $group:{
+                        _id: "$questionId", 
+                        average: {
+                            $avg: '$answer'
+                        },
+                        questionId: { "$first": "$questionId"}
+                    }
+            }])
+        const populatedQuestions = await Answer.populate(allAnswers, {path: "questionId"})
+        res.status(200)
+            .json({
+                answers: populatedQuestions
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500)
+            .json({
+                error: "Something went wrong",
+                message: "No answers"
+            })
+    }
+    
+})
 router.post("/multiple", userAuth, async (req, res)=>{
     try{
         const {user} = req
         const allAnswers = req.body.answers.map((ans)=>{
-            return {answer: ans.answer, questionId: ans.questionId, answer_by: user._id}
+            return {answer: parseInt(ans.answer), questionId: ans.questionId, answer_by: user._id}
         });
 
         await Answer.collection.insertMany(allAnswers)

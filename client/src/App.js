@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Questions from './components/Questions';
 import ProtectedRoute from './HOC/protectedRoutes';
+import AnswerStats from './components/AnswerStats';
 function App() {
   useEffect(() => {
   }, [])
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/" render={() => (<Redirect to="/login" />)}  />
           <Route exact path="/signup"  component={Signup} />
           <Route path="/login" component={Login} />
+          <Route path="/stats" component={AnswerStats} />
           <ProtectedRoute path="/questions"  component={Questions} />
         </Switch>
         
