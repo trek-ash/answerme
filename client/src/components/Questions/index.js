@@ -31,9 +31,9 @@ const Questions = (props) => {
         AnswerAPI.getUserAnswers(token)
         .then(res=>{
             console.log(res)
-            const userAnswers = res.data.answers.map(answer=>{
-                return {answer: answer.answer, questionId: answer.questionId}
-            })
+            // const userAnswers = res.data?.answers.map(answer=>{
+            //     return {answer: answer.answer, questionId: answer.questionId}
+            // })
             // updateUserAnswers(userAnswers)
         }, err=>{
 
