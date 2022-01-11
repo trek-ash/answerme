@@ -46,10 +46,12 @@ const Questions = (props) => {
         AnswerAPI.multipleAnswers({answers: userAnswer}, token)
         .then(res=>{
             console.log(res)
-
+            alert("Answers saved successfully")
         })
         .catch(err=>{
             console.log(err);
+            alert("Something went wrong")
+
             
         })
     }
