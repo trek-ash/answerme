@@ -1,0 +1,9 @@
+.footer{
+    background-color: #37474F;
+    text-align: center;
+    padding: 40px;
+}
+.footer h3{
+    font-family: "Balsamiq Sans, cursive";
+    color: #fff!important;
+}
