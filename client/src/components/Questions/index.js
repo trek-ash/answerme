@@ -30,17 +30,22 @@ const Questions = (props) => {
 
         AnswerAPI.getUserAnswers(token)
         .then(res=>{
-            console.log(res)
-            // const userAnswers = res.data?.answers.map(answer=>{
-            //     return {answer: answer.answer, questionId: answer.questionId}
-            // })
-            // updateUserAnswers(userAnswers)
-        }, err=>{
-
-            console.log(err)
+            // console.log(res)
+            // if(res.data)    {
+            //     const userAnswers = res.data?.answers.map(answer=>{
+            //         return {answer: answer.answer, questionId: answer.questionId}
+            //     })
+            //     updateUserAnswers(userAnswers)
+            // }
         })
+        .catch(err=>{
+            console.log(err)
+
+        })
+        // getStats()
     }, [])
 
+    
     const submit = () => {
         const token = localStorage.getItem("auth")
         AnswerAPI.multipleAnswers({answers: userAnswer}, token)

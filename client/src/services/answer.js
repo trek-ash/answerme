@@ -8,6 +8,8 @@ export default {
 
   getUserAnswers(token)  {
     return API().get('/answer/user', { 'headers': { 'Authorization': "Bearer "+token } })
-
+  },
+  getAveragePerQuestion()   {
+      return API().get("/answer/stats/average")
   }
 }
